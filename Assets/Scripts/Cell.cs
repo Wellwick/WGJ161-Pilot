@@ -23,9 +23,13 @@ public class Cell : MonoBehaviour
         neighbours[(int)dir] = cell;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsNeighbour(Cell cell)
     {
-        
+        foreach (Cell c in neighbours) {
+            if (c == cell) {
+                return true;
+            }
+        }
+        return false;
     }
 }

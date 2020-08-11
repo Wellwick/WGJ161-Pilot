@@ -9,12 +9,8 @@ public class Grid : MonoBehaviour
     private Cell[,] grid;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        Debug.Log("North equates to " + (int)Directions.North);
-        Debug.Log("East equates to " + (int)Directions.East);
-        Debug.Log("South equates to " + (int)Directions.South);
-        Debug.Log("West equates to " + (int)Directions.West);
         grid = new Cell[width, height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -40,9 +36,8 @@ public class Grid : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public Cell GetCell(int x, int y)
     {
-        
+        return grid[x, y];
     }
 }
