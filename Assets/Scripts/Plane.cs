@@ -8,7 +8,7 @@ public class Plane : MonoBehaviour
     public Camera gameCamera;
 
     private Cell location;
-    private List<Cell> trail;
+    private Stack<Cell> trail;
 
     private bool selected;
 
@@ -17,18 +17,19 @@ public class Plane : MonoBehaviour
     {
         GetComponent<MeshRenderer>().materials[0].color = color;
         selected = false;
-        trail = new List<Cell>();
+        trail = new Stack<Cell>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FaceDirection(Directions direction)
     {
-        
+        transform.localRotation = Direction.Rotation(direction);
     }
 
     public void SetLocation(Cell cell)
     {
         location = cell;
+        transform.localPosition = cell.transform.localPosition + new Vector3(0f, 0f, -1f);
+        cell.SetTrail(true);
     }
 
     private void OnMouseDown()
@@ -59,24 +60,30 @@ public class Plane : MonoBehaviour
             // No point doing anything if we aren't dragging over a cell
             if (cell) {
                 // Check the last of the trail first, since we can backtrack
-                int index = trail.IndexOf(cell);
-                if (index > -1 && index == trail.Count - 1) {
+                if (trail.Count > 0 && trail.Peek() == cell) {
+                    location.SetTrail(false);
                     location = cell;
                     location.GetComponent<MeshRenderer>().materials[0].color = Color.white;
                     transform.localPosition = objectHit.localPosition + new Vector3(0f, 0f, -1f);
-                    trail.Remove(cell);
+                    trail.Pop();
+                    // Figure out based on the latest cell in the trail which direction to face
+                    if (trail.Count == 0) {
+                        FaceDirection(Directions.North);
+                    } else {
+                        Cell newLast = trail.Peek();
 
-                } else if (index != -1) {
-                    // If it's not the most recent, can't go there
+                    }
+
+                } else if (trail.Contains(cell)) {
+                    // If it's in the trail already, we can't go there
                     return;
                 }
-                if (location.IsNeighbour(cell)) {
+                if (location.IsNeighbour(cell) && cell.IsSafeNextStep()) {
                     // This is the only case where it's safe to move
-                    trail.Add(location);
+                    trail.Push(location);
                     location.GetComponent<MeshRenderer>().materials[0].color = 
                         Color.Lerp(Color.white, color, 0.5f);
-                    location = cell;
-                    transform.localPosition = objectHit.localPosition + new Vector3(0f,0f,-1f);
+                    SetLocation(cell);
                 }
             }
         }

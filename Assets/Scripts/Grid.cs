@@ -36,8 +36,68 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public void AddRadar(Radar radar, Cell centre, int range)
+    {
+        Vector3 location = centre.transform.localPosition;
+        // Make a circle and test which cells fall within it!
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                bool inCircle = 
+                    (i - location.x) * (i - location.x) + 
+                    (j - location.y) * (j - location.y) <= 
+                    (range * range);
+                if (inCircle) {
+                    grid[i, j].AddRadar(radar);
+                }
+            }
+        }
+    }
+
+    public void RemoveRadar(Radar radar, Cell centre, int range)
+    {
+        Vector3 location = centre.transform.localPosition;
+        // Make a circle and test which cells fall within it!
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                bool inCircle = 
+                    (i - location.x) * (i - location.x) + 
+                    (j - location.y) * (j - location.y) <= 
+                    (range * range);
+                if (inCircle) {
+                    grid[i, j].RemoveRadar(radar);
+                }
+            }
+        }
+    }
+
+    public Vector3 CentrePoint()
+    {
+        return new Vector3(width * 0.5f - 0.5f, height * 0.5f - 0.5f, -10f);
+    }
+
+    public float ScreenSize()
+    {
+        float widthRequirement = width / 16f;
+        float heightRequirement = height / 9f;
+        return Mathf.Max(widthRequirement, heightRequirement) * 4.5f;
+    }
+
     public Cell GetCell(int x, int y)
     {
         return grid[x, y];
+    }
+
+    public void ClearObscurations()
+    {
+        foreach (Cell cell in grid) {
+            cell.SetObscuredNext(false);
+        }
+    }
+
+    public void Recolour(int radarCount)
+    {
+        foreach (Cell cell in grid) {
+            cell.Recolour(radarCount);
+        }
     }
 }
