@@ -12,10 +12,11 @@ public class Level : MonoBehaviour
     public GameObject cloudPrefab;
 
     private Grid grid;
-    private Plane plane;
-    private Plane plane2;
+    private List<Plane> planes;
     private List<Radar> radars;
     private List<Cloud> clouds;
+
+    private int time;
 
     // Start is called before the first frame update
     void Start()
@@ -24,13 +25,18 @@ public class Level : MonoBehaviour
         gameCamera.transform.localPosition = grid.CentrePoint();
         gameCamera.orthographicSize = grid.ScreenSize();
 
+        planes = new List<Plane>();
         planePrefab.GetComponent<Plane>().gameCamera = gameCamera;
-        plane = Instantiate(planePrefab, transform).GetComponent<Plane>();
+        Plane plane = Instantiate(planePrefab, transform).GetComponent<Plane>();
         plane.color = Color.green;
         plane.SetLocation(grid.GetCell(0, 0));
-        plane2 = Instantiate(planePrefab, transform).GetComponent<Plane>();
+        plane.level = this;
+        planes.Add(plane);
+        Plane plane2 = Instantiate(planePrefab, transform).GetComponent<Plane>();
         plane2.color = Color.blue;
-        plane2.SetLocation(grid.GetCell(3, 4));
+        plane2.SetLocation(grid.GetCell(8, 8));
+        plane2.level = this;
+        planes.Add(plane2);
 
         radars = new List<Radar>();
         Radar radar1 = Instantiate(radarPrefab, transform).GetComponent<Radar>();
@@ -47,9 +53,17 @@ public class Level : MonoBehaviour
         foreach (Radar radar in radars) {
             radar.AddRadar();
         }
-
-        grid.Recolour(radars.Count);
     }
+
+    public void GoToTime(int time)
+    {
+        grid.Recolour(radars.Count);
+
+        foreach (Cloud cloud in clouds) {
+            cloud.GoToTime(0);
+        }
+    }
+
 
     
 }

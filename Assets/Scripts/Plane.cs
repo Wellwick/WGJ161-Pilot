@@ -6,6 +6,7 @@ public class Plane : MonoBehaviour
 {
     public Color color;
     public Camera gameCamera;
+    public Level level;
 
     private Cell location;
     private Stack<Cell> trail;
@@ -28,7 +29,7 @@ public class Plane : MonoBehaviour
     public void SetLocation(Cell cell)
     {
         location = cell;
-        transform.localPosition = cell.transform.localPosition + new Vector3(0f, 0f, -1f);
+        transform.localPosition = cell.transform.localPosition + new Vector3(0f, 0f, -2f);
         cell.SetTrail(true);
     }
 
@@ -71,9 +72,10 @@ public class Plane : MonoBehaviour
                         FaceDirection(Directions.North);
                     } else {
                         Cell newLast = trail.Peek();
-
+                        FaceDirection(newLast.GetDirection(location));
                     }
-
+                    level.GoToTime(trail.Count-1);
+                    return;
                 } else if (trail.Contains(cell)) {
                     // If it's in the trail already, we can't go there
                     return;
@@ -84,6 +86,7 @@ public class Plane : MonoBehaviour
                     location.GetComponent<MeshRenderer>().materials[0].color = 
                         Color.Lerp(Color.white, color, 0.5f);
                     SetLocation(cell);
+                    level.GoToTime(trail.Count - 1);
                 }
             }
         }

@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248029984}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.41619772, y: 0.15737869, z: -0.07338688, w: 0.89253896}
   m_LocalPosition: {x: 0.88, y: -2.07, z: -27.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 20, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +332,8 @@ MonoBehaviour:
     type: 3}
   radarPrefab: {fileID: 3634093630581984991, guid: abb3baa17f929c04ea0c73e8c1e5504c,
     type: 3}
-  cloudPrefab: {fileID: 0}
+  cloudPrefab: {fileID: 7790827708089427933, guid: fbd3b55525c4e8e489388a0ae37abd76,
+    type: 3}
 --- !u!4 &852389350
 Transform:
   m_ObjectHideFlags: 0

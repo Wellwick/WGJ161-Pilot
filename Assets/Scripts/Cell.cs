@@ -43,6 +43,22 @@ public class Cell : MonoBehaviour
         return false;
     }
 
+    public Cell GetNeighbour(Directions direction)
+    {
+        return neighbours[(int)direction];
+    }
+
+    public Directions GetDirection(Cell cell)
+    {
+        foreach (Directions direction in System.Enum.GetValues(typeof(Directions))) {
+            if (neighbours[(int)direction] == cell) {
+                return direction;
+            }
+        }
+        // This should never happen!
+        return 0;
+    }
+
     public void AddRadar(Radar radar)
     {
         inRange.Add(radar);
