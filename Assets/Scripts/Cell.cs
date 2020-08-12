@@ -24,10 +24,17 @@ public class Cell : MonoBehaviour
 
     public void Recolour(int radarCount)
     {
+        Color c;
         if (radarCount == 0) {
-            GetComponent<MeshRenderer>().materials[0].color = Color.white;
+            c = Color.white;
         } else {
-            GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(Color.white, Color.red, (float)inRange.Count/radarCount*0.8f);
+            c = Color.Lerp(Color.white, Color.red, (float)inRange.Count/radarCount*0.8f);
+        }
+
+        if (isAirport) {
+            GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(c, Color.yellow, 0.5f);
+        } else {
+            GetComponent<MeshRenderer>().materials[0].color = c;
         }
     }
 

@@ -11,48 +11,62 @@ public class Level : MonoBehaviour
     public GameObject radarPrefab;
     public GameObject cloudPrefab;
 
-    private Grid grid;
-    private List<Plane> planes;
-    private List<Radar> radars;
-    private List<Cloud> clouds;
+    protected Grid grid;
+    protected List<Plane> planes;
+    protected List<Radar> radars;
+    protected List<Cloud> clouds;
 
-    // Start is called before the first frame update
-    void Start()
+    protected void PrepareLevel()
     {
-        grid = Instantiate(gridPrefab, transform).GetComponent<Grid>();
-        gameCamera.transform.localPosition = grid.CentrePoint();
-        gameCamera.orthographicSize = grid.ScreenSize();
-
-        planes = new List<Plane>();
         planePrefab.GetComponent<Plane>().gameCamera = gameCamera;
+        planes = new List<Plane>();
+        radars = new List<Radar>();
+        clouds = new List<Cloud>();
+    }
+
+    protected void SetupGrid(int width, int height)
+    {
+        gridPrefab.GetComponent<Grid>().width = 18;
+        gridPrefab.GetComponent<Grid>().height = 12;
+        grid = Instantiate(gridPrefab, transform).GetComponent<Grid>();
+    }
+
+    protected void AddPlane(int x, int y, Color c)
+    {
         Plane plane = Instantiate(planePrefab, transform).GetComponent<Plane>();
-        plane.color = Color.green;
-        plane.SetLocation(grid.GetCell(0, 0));
+        plane.SetLocation(grid.GetCell(x, y));
+        plane.color = c;
         plane.level = this;
         planes.Add(plane);
-        Plane plane2 = Instantiate(planePrefab, transform).GetComponent<Plane>();
-        plane2.color = Color.blue;
-        plane2.SetLocation(grid.GetCell(8, 8));
-        plane2.level = this;
-        planes.Add(plane2);
+    }
 
-        radars = new List<Radar>();
-        Radar radar1 = Instantiate(radarPrefab, transform).GetComponent<Radar>();
-        radar1.SetLocation(grid.GetCell(5, 5));
-        radar1.range = 4;
-        radar1.grid = grid;
-        radars.Add(radar1);
-        Radar radar2 = Instantiate(radarPrefab, transform).GetComponent<Radar>();
-        radar2.SetLocation(grid.GetCell(6, 7));
-        radar2.range = 2;
-        radar2.grid = grid;
-        radars.Add(radar2);
+    protected void AddRadar(int x, int y, int range)
+    {
+        Radar radar = Instantiate(radarPrefab, transform).GetComponent<Radar>();
+        radar.SetLocation(grid.GetCell(x, y));
+        radar.range = range;
+        radar.grid = grid;
+        radars.Add(radar);
+    }
 
-        clouds = new List<Cloud>();
-        Cloud cloud1 = Instantiate(cloudPrefab, transform).GetComponent<Cloud>();
-        cloud1.AddDelay(3);
-        cloud1.CalculatePath(grid.GetCell(0, 3), Directions.East);
-        clouds.Add(cloud1);
+    protected void AddCloud(int x, int y, Directions direction, int delayTime)
+    {
+        Cloud cloud = Instantiate(cloudPrefab, transform).GetComponent<Cloud>();
+        // Probably better practice to add the delay before the path calculation
+        cloud.AddDelay(delayTime);
+        cloud.CalculatePath(grid.GetCell(x, y), direction);
+        clouds.Add(cloud);
+    }
+
+    protected void AddAirport(int x, int y)
+    {
+        grid.GetCell(x, y).isAirport = true;
+    }
+
+    protected void BeginLevel()
+    {
+        gameCamera.transform.localPosition = grid.CentrePoint();
+        gameCamera.orthographicSize = grid.ScreenSize();
 
         foreach (Radar radar in radars) {
             radar.AddRadar();
@@ -68,6 +82,10 @@ public class Level : MonoBehaviour
 
         foreach (Cloud cloud in clouds) {
             cloud.GoToTime(time);
+        }
+
+        if (LevelComplete()) {
+            Debug.Log("The level has been completed!");
         }
     }
 
