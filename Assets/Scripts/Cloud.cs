@@ -29,6 +29,7 @@ public class Cloud : MonoBehaviour
     {
         if (time < delayedAppearance) {
             transform.localPosition = hiddenSpot;
+            return;
         }
         time -= delayedAppearance;
         if (time >= path.Count) {
@@ -36,9 +37,9 @@ public class Cloud : MonoBehaviour
         } else {
             Cell location = path.ToArray()[time];
             transform.localPosition = location.transform.localPosition + new Vector3(0f, 0f, -1f);
-            Cell next = location.GetNeighbour(direction);
-            if (next) {
-                next.SetObscuredNext(true);
+            if (time + 1 < path.Count) {
+                Debug.Log("Setting the next cell as obscured next turn");
+                path.ToArray()[time+1].SetObscuredNext(true);
             }
         }
     }

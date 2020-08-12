@@ -42,7 +42,7 @@ public class Plane : MonoBehaviour
             Transform objectHit = hit.transform;
             if (objectHit == transform) {
                 selected = true;
-                Debug.Log("Plane has been clicked");
+                level.GoToTime(trail.Count);
             }
         }
     }
@@ -74,7 +74,7 @@ public class Plane : MonoBehaviour
                         Cell newLast = trail.Peek();
                         FaceDirection(newLast.GetDirection(location));
                     }
-                    level.GoToTime(trail.Count-1);
+                    level.GoToTime(trail.Count);
                     return;
                 } else if (trail.Contains(cell)) {
                     // If it's in the trail already, we can't go there
@@ -86,7 +86,7 @@ public class Plane : MonoBehaviour
                     location.GetComponent<MeshRenderer>().materials[0].color = 
                         Color.Lerp(Color.white, color, 0.5f);
                     SetLocation(cell);
-                    level.GoToTime(trail.Count - 1);
+                    level.GoToTime(trail.Count);
                 }
             }
         }

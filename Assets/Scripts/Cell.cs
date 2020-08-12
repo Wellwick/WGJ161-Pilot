@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    private Cell[] neighbours;
+    public Cell[] neighbours;
     
-    private bool obscuredNext;
+    public bool obscuredNext;
     private bool trail;
 
     private List<Radar> inRange;

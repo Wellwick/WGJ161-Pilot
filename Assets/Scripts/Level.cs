@@ -16,8 +16,6 @@ public class Level : MonoBehaviour
     private List<Radar> radars;
     private List<Cloud> clouds;
 
-    private int time;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -50,17 +48,26 @@ public class Level : MonoBehaviour
         radar2.grid = grid;
         radars.Add(radar2);
 
+        clouds = new List<Cloud>();
+        Cloud cloud1 = Instantiate(cloudPrefab, transform).GetComponent<Cloud>();
+        cloud1.AddDelay(3);
+        cloud1.CalculatePath(grid.GetCell(0, 3), Directions.East);
+        clouds.Add(cloud1);
+
         foreach (Radar radar in radars) {
             radar.AddRadar();
         }
+
+        GoToTime(0);
     }
 
     public void GoToTime(int time)
     {
         grid.Recolour(radars.Count);
+        grid.ClearObscurations();
 
         foreach (Cloud cloud in clouds) {
-            cloud.GoToTime(0);
+            cloud.GoToTime(time);
         }
     }
 
