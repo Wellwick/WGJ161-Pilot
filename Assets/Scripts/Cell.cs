@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    public Cell[] neighbours;
+    public bool isAirport = false;
+
+    private Cell[] neighbours;
     
-    public bool obscuredNext;
+    private bool obscuredNext;
     private bool trail;
 
     private List<Radar> inRange;

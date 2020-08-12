@@ -96,4 +96,9 @@ public class Plane : MonoBehaviour
     {
         selected = false;
     }
+
+    public bool IsSafe()
+    {
+        return location.isAirport;
+    }
 }

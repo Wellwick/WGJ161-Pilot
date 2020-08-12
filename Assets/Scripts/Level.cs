@@ -71,6 +71,15 @@ public class Level : MonoBehaviour
         }
     }
 
+    public bool LevelComplete()
+    {
+        foreach (Plane plane in planes) {
+            if (!plane.IsSafe()) {
+                return false;
+            }
+        }
 
+        return true;
+    }
     
 }
