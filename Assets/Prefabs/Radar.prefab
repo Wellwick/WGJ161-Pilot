@@ -395,6 +395,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 0
-  spinSpeed: -90
+  spinSpeed: -500
   location: {fileID: 0}
   grid: {fileID: 0}
