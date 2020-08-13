@@ -328,9 +328,9 @@ MonoBehaviour:
   gameCamera: {fileID: 519420031}
   gridPrefab: {fileID: 786804720709668092, guid: 93612da12498bde44843c503a32a4005,
     type: 3}
-  planePrefab: {fileID: 6665284646963781826, guid: 6ba2377a94c05a040820caaad8339502,
+  planePrefab: {fileID: 5532366097648208742, guid: f1356d8d250f589438ff0aea24e08455,
     type: 3}
-  radarPrefab: {fileID: 3634093630581984991, guid: abb3baa17f929c04ea0c73e8c1e5504c,
+  radarPrefab: {fileID: 7441948370504386531, guid: 74d36fbebd8fab1429addc8dd40631cc,
     type: 3}
   cloudPrefab: {fileID: 7790827708089427933, guid: fbd3b55525c4e8e489388a0ae37abd76,
     type: 3}

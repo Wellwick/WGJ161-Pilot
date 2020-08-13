@@ -16,7 +16,23 @@ public class Plane : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<MeshRenderer>().materials[0].color = color;
+        //GetComponent<MeshRenderer>().materials[0].color = color;
+        foreach(Transform child in transform) {
+            switch (child.name) {
+                case "Fuselage":
+                    child.GetComponent<MeshRenderer>().materials[0].color = color;
+                    break;
+                case "Wing":
+                    child.GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(color, Color.black, 0.2f);
+                    break;
+                case "Rudder":
+                    child.GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(color, Color.black, 0.4f);
+                    break;
+                case "Propellor":
+                    child.GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(color, Color.white, 0.6f);
+                    break;
+            }
+        }
         selected = false;
         trail = new Stack<Cell>();
     }
@@ -30,7 +46,7 @@ public class Plane : MonoBehaviour
     {
         location = cell;
         transform.localPosition = cell.transform.localPosition + new Vector3(0f, 0f, -2f);
-        cell.SetTrail(true);
+        cell.SetTrail(this);
     }
 
     private void OnMouseDown()
@@ -62,7 +78,7 @@ public class Plane : MonoBehaviour
             if (cell) {
                 // Check the last of the trail first, since we can backtrack
                 if (trail.Count > 0 && trail.Peek() == cell) {
-                    location.SetTrail(false);
+                    location.SetTrail(null);
                     location = cell;
                     location.GetComponent<MeshRenderer>().materials[0].color = Color.white;
                     transform.localPosition = objectHit.localPosition + new Vector3(0f, 0f, -1f);
@@ -83,6 +99,7 @@ public class Plane : MonoBehaviour
                 if (location.IsNeighbour(cell) && cell.IsSafeNextStep()) {
                     // This is the only case where it's safe to move
                     trail.Push(location);
+                    FaceDirection(location.GetDirection(cell));
                     location.GetComponent<MeshRenderer>().materials[0].color = 
                         Color.Lerp(Color.white, color, 0.5f);
                     SetLocation(cell);

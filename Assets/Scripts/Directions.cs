@@ -14,6 +14,6 @@ class Direction
 {
     public static Quaternion Rotation(Directions direction)
     {
-        return Quaternion.Euler(0f, 0f, 90f * (int)direction);
+        return Quaternion.Euler(0f, 0f, -90f * (int)direction);
     }
 }

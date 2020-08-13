@@ -26,8 +26,8 @@ public class Level : MonoBehaviour
 
     protected void SetupGrid(int width, int height)
     {
-        gridPrefab.GetComponent<Grid>().width = 18;
-        gridPrefab.GetComponent<Grid>().height = 12;
+        gridPrefab.GetComponent<Grid>().width = width;
+        gridPrefab.GetComponent<Grid>().height = height;
         grid = Instantiate(gridPrefab, transform).GetComponent<Grid>();
     }
 

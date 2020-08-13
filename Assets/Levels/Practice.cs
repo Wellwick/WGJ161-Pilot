@@ -10,7 +10,7 @@ public class Practice : Level
     {
         PrepareLevel();
 
-        SetupGrid(12, 18);
+        SetupGrid(18, 10);
 
         AddPlane(0, 0, Color.green);
         AddPlane(8, 8, Color.blue);

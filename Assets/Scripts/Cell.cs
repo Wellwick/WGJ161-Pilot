@@ -9,7 +9,7 @@ public class Cell : MonoBehaviour
     private Cell[] neighbours;
     
     private bool obscuredNext;
-    private bool trail;
+    private Plane trail;
 
     private List<Radar> inRange;
 
@@ -18,7 +18,7 @@ public class Cell : MonoBehaviour
     {
         neighbours = new Cell[4];
         obscuredNext = false;
-        trail = false;
+        trail = null;
         inRange = new List<Radar>();
     }
 
@@ -32,10 +32,14 @@ public class Cell : MonoBehaviour
         }
 
         if (isAirport) {
-            GetComponent<MeshRenderer>().materials[0].color = Color.Lerp(c, Color.yellow, 0.5f);
-        } else {
-            GetComponent<MeshRenderer>().materials[0].color = c;
+            c = Color.Lerp(c, Color.yellow, 0.5f);
         }
+
+        if (trail) {
+            c = Color.Lerp(c, trail.color, 0.5f);
+        }
+
+        GetComponent<MeshRenderer>().materials[0].color = c;
     }
 
     public void SetNeighbour(Directions dir, Cell cell) {
@@ -83,9 +87,9 @@ public class Cell : MonoBehaviour
         obscuredNext = o;
     }
 
-    public void SetTrail(bool t)
+    public void SetTrail(Plane p)
     {
-        trail = t;
+        trail = p;
     }
 
     public bool IsSafeNextStep()
