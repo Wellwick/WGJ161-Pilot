@@ -5,6 +5,7 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     public Camera gameCamera;
+    public LevelLoader levelComplete;
 
     public GameObject gridPrefab;
     public GameObject planePrefab;
@@ -18,6 +19,7 @@ public class Level : MonoBehaviour
 
     protected void PrepareLevel()
     {
+        levelComplete.Enable(false);
         planePrefab.GetComponent<Plane>().gameCamera = gameCamera;
         planes = new List<Plane>();
         radars = new List<Radar>();
@@ -93,10 +95,13 @@ public class Level : MonoBehaviour
     {
         foreach (Plane plane in planes) {
             if (!plane.IsSafe()) {
+                levelComplete.Enable(false);
                 return false;
             }
         }
 
+        levelComplete.Enable(true);
+        levelComplete.Center();
         return true;
     }
     
